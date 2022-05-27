@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "pair_programming"
+version = "0.1.0"
+description = ""
+authors = ["SakikoYahata <yahata@nlp.ist.i.kyoto-u.ac.jp>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+numpy = "^1.22.3"
+transformers = "^4.19.2"
+torch = "^1.11.0"
+jupyter = "^1.0.0"
+
+[tool.poetry.dev-dependencies]
+ipykernel = "^6.13.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
