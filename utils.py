@@ -17,8 +17,6 @@ def set_device(gpuid: str) -> torch.device:
     if gpuid and torch.cuda.is_available():
         assert re.fullmatch(r"[0-7](,[0-7])*", gpuid) is not None, "invalid way to specify gpuid"
         os.environ["CUDA_VISIBLE_DEVICES"] = gpuid
-        device = torch.device(f"cuda:{gpuid}")
-    else:
-        device = torch.device("cpu")
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     return device

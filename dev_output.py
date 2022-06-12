@@ -10,7 +10,6 @@ from model import BERTPairPro
 import csv
 import os
 
-
 def main():
     parser = ArgumentParser()
     parser.add_argument(
@@ -37,6 +36,7 @@ def main():
     # device = set_device(args.gpu_id)
     os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu_id
     device = torch.device("cuda" if torch.cuda.is_available()  else "cpu")
+    
     n_gpu = torch.cuda.device_count()
     print(device)
     print(n_gpu)
@@ -45,8 +45,8 @@ def main():
         args.pretrained_model, do_lower_case=False, do_basic_tokenize=False
     )
 
-    test_dataset = KUCIDataset(args.data_path+'/test.jsonl', tokenizer, args.max_seq_len, is_test=True)
-    test_dataloader = DataLoader(test_dataset, batch_size=args.batch_size, shuffle=False, num_workers=2)
+    dev_dataset = KUCIDataset(args.data_path+'/development.jsonl', tokenizer, args.max_seq_len, is_test=False)
+    dev_dataloader = DataLoader(dev_dataset, batch_size=args.batch_size, shuffle=False, num_workers=2)
 
     model = BERTPairPro(args.pretrained_model)
     model = model.to(device)
@@ -56,9 +56,9 @@ def main():
         model = torch.nn.DataParallel(model)
 
     model.eval()
-    _, prediction = evaluate(model, test_dataloader, device, n_gpu, 0, is_test=True)
+    _, prediction = evaluate(model, dev_dataloader, device, n_gpu, is_test=True)
 
-    with open(args.save_path+"/test_prediction.csv", "w") as f:
+    with open(args.save_path+"/dev_prediction.csv", "w") as f:
         csv.writer(f).writerows(prediction)
     f.close()
 

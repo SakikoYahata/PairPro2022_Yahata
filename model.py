@@ -1,10 +1,10 @@
 import torch.nn as nn
-from transformers import BertModel
+from transformers import BertModel, AutoModel
 
 class BERTPairPro(nn.Module):
     def __init__(self, pretrained_model):
         super().__init__()
-        self.bert = BertModel.from_pretrained(
+        self.bert = AutoModel.from_pretrained(
             pretrained_model, output_attentions=False
         )
         self.linear = nn.Linear(
